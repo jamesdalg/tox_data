@@ -1,0 +1,35 @@
+---
+title: "Toxmap initial work"
+author: "James Dalgleish"
+date: "November 16, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r data_import}
+setwd("../tox_data/")
+list.files()
+contaminants <- read_csv("npl_contaminants.csv")
+names(contaminants)
+#[1] "EPAFacilityID"   "ContaminantName" "RegistryNumber"
+facilities <- read_csv("npri_facilities.csv") #site data is for 2017
+#facility with a lot of geographic data (down to address and lat/long)
+superfund_npl <- read_csv("superfund_npl.csv") %>% janitor::clean_names() %>% 
+  arrange(-hrs_score) 
+superfund_npl
+#also has a fips
+#has an EPA id.
+#can join to tri_facilities by latitude and longitude.
+tri_facilities <- read_csv("tri_facilities_all.csv") %>% janitor::clean_names() 
+  #can link to cancer data with fips.
+#quantities of specific compounds by organization.
+#once we have organization, then we should get county data.
+intersect(names(superfund_npl),names(tri_facilities))
+tri_facilities <- read_csv("tri_facilities_all.csv")
+
+#link contam with with epa id to superfund_npl, then to tri_facilities, then to facilities (with latitude and longitude).
+```
+
